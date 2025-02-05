@@ -1,0 +1,145 @@
+---
+title: "Exercise 3_blank"
+output: html_document
+date: "2025-02-04"
+---
+
+For this exercise, we are following along with using R and RStudio in chapter 6 of S&B and chapter K, chapters 1 and 2. The goal of this exercise is to get you using R and R Studio by following the step-by-step codes in the examples from these two chapters.
+
+The first step in using R and R Studio is to download the software to your computer:
+
+Once you have installed the software to your computer, you can now follow along completing the exercises 6.1.3, 6.1.4, and 6.2 in the S&B textbook
+
+Exercise 6.13
+You will need to install and open several packages that allow us to complete specific tasks. Create a chunk if code via the Code tab, then "insert chunk". In the code chunk, add the prompts for install.packages and librarys as written on pp. 55-56.
+
+```{r}
+install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("modelsummary")
+install.packages("foreign")
+library(tidyverse)
+library(dplyr)
+library(modelsummary)
+library(foreign)
+```
+
+Exercise 6.1.4
+```{r}
+#a. Creating a vector "x" with the values, 1,2, and 3
+
+#b. Creating a vector "y" with the values "yes" and "no"
+
+#Create a data frame with the x and y vectors created above:
+
+#Write "dat" below will display the data frame
+
+#We can also single out the second column (vector 7) using the $ operator
+
+
+```
+
+To see what happens when you make an error, let's attempt to assign a value of variable W to variable Z
+```{r}
+z <- w
+```
+The reason for the error is that we assigned a value to a variable that does not exist.
+
+Exercise 6.2: Importing data into R
+a. Setting a working directory. I recommend setting your working directory to folders on your One Drive.
+```{r}
+#setwd("your file path")
+getwd()
+```
+
+Now, we will import a dataset into R that the authors, S&B, use as examples. The data is called "PartyData.csv"
+```{r}
+#Running this code will download the data, "PartyData.csv" from a respository on the web.
+party_data <- read.csv("https://raw.githubusercontent.com/nickbordeleau/QMSS/main/PartyData.csv")
+View(party_data)
+head(party_data)
+#View(party-data) shows the data file in a new tab above.
+#head(party_data) shows the first six rows of the data file in this RMD document.
+```
+
+Now we will complete some exercises in the Kabacoff book that introduce using R and R studio. Follow along in chapters 1 and 2 in that book. The exercises below are taken directly from those two chapters.
+```{r}
+#This is listing 1.1 from page 9 in Kabacoff, in which we create a database with two variables (age and weight)
+
+```
+
+Kabacoff, listing 2.1, page 24 on creating matrices:
+```{r}
+#1. Creating a 5x4 matrix
+
+```
+
+```{r}
+#2: create a 2x2 matrix filled by rows
+
+```
+
+```{r}
+#3. Create a 2x2 matrix filled by columns
+
+```
+
+Kabacoff, Listing 2.2 p. 24:
+```{r}
+#Using matrix subscripts
+#First, create a 2x5 matrix containing numbers 1-10
+
+#second, the elements in the second row are selected
+
+#third, the elements in the second column are selected
+
+#Fourth, the elements in the first and fourth column are selected
+
+#finally, the elements in the first row and fourth and fifth columns are selected
+
+```
+
+Kabacoff, listing 2.3, p. 25
+```{r}
+#Creating a three-dimensional (2x3x4) array of numbers
+
+```
+
+Kabacoff, listing 2.4, p. 26
+```{r}
+#Creating a data frame
+
+```
+
+Kabacoff, listing 2.5, p. 26-27
+```{r}
+#Specifying elements of a data frame
+#1. To specify the first two columns of the data frame, patientID and age
+
+#2. To specify the columns, "diabetes" and "status":
+
+#3, To show the column, "age"
+
+```
+
+Kabacoff, listing 2.6, pp. 29-30
+```{r}
+#Using factors:
+#1. Enter data as vectors:
+
+#the statement below indicates that diabetes is a nominal variable (factor variable)
+diabetes <- factor(diabetes)
+
+#the statement below indicates that status is an ordinal variable that R treats as a factor in an ordered sequence.
+status <- factor(status, order=TRUE)
+
+#2. Display the object structure to show that diabetes is a factor and status is an ordered factor
+
+#3. Display the object summary to show minimum, maximum, mean, and quartiles for continuous variable age and frequency counts for categorical variables, diabetes and status
+
+```
+
+Kabacoff, Listing 2.7, p. 30
+```{r}
+#Creating a list - follow along the steps in this listing to create "My First List"
+```
