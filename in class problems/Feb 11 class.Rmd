@@ -1,0 +1,36 @@
+---
+title: "Feb 11 class exercise"
+output: html_document
+date: "2025-02-10"
+---
+For this exercise, we will:
+1. practice downloading the RMD file from GitHub
+2. download the NHANES 2017-2018 database
+3. convert the nominal and ordinal variables in this database to be read accordingly in R Studo
+4. upload our completed RMD file to GitHub
+
+2. Once you have downloaded the RMD file from GitHub, we will download the raw data for the NHANES 2017-2018 dataset that I created to work in R Studio.
+
+```{r}
+#create a name for your data set. Below, I call mine "NHANESdata": Go to the class github site, click on "data", then "2017-28 data", then click on "raw", then copy the URL address into the parentheses below with "" marks
+NHANESdata <- read.csv()
+#to show the first six rows of the data set:
+head(NHANESdata)
+```
+
+3. What are the nominal/categorical variables in this data set?
+
+Let's tell R Studio to treat these three variables as categorical ones:
+```{r}
+factor()
+factor()
+factor()
+```
+
+What are the ordinal variables in this data set?
+Let's tell R Studio to treat these six variables as ordinal ones:
+```{r}
+factor()
+```
+
+4. Let's upload this RMD file to github
