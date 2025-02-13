@@ -1,0 +1,61 @@
+---
+title: "exercise 4"
+output: html_document
+date: "2025-02-12"
+---
+We will use the NHANES database that we downloaded on Tuesday. Make sure that you have already designated the nominal and ordinal variables as factor variables like we did on Tuesday.
+
+
+1. Create simple frequency table with the three nominal variables, race, gender, and health insurance, from the NHANES data set using the dplyr package:
+```{r}
+#open the "dplyr" package
+library(dplyr)
+#use the following statement to generate a simple frequency table for each nominal variable: count(database, variable)
+
+#In the lines below the output, explain the frequency counts of each nominal variable
+```
+Below, describe the variation for each nominal variable based on the above frequency tables:
+
+2. Another method to generate frequency tables that include cumulative percentages uses the "questionr" package. If you do not have the questionr package, you will need to install it with the "installed.packages" command. If you do already have it, then you need to open the package using the "library" command.
+
+Create a frequency table for each ordinal variable in the NHANES data set. Education, HHEdcuation, HHIncome, FeelBad, HHFoodSec, and BMIcat. After generating each frequency table, describe the variation that you see.
+```{r}
+#install.packages("questionr")
+#library(questionr)
+#use the following code to generate a frequency table for each ordinal variable.
+#freq(data$variable, cum = TRUE, na.omit(data$variable)) (do not use na.omit for BMIcat)
+
+```
+
+3. Create a simple frequency count using the table() function. Apply this function to "Race" and "Gender".
+```{r}
+#mytable <- with(data, table(variable))
+
+mytable
+#turn the above table into propotions with prop.table(mytable)
+
+#turn the table into percentages using prop.table(mytable)*100
+
+```
+
+4. Create a two-way table using the xtabs function. Create one two-way table for Gender and BMIcats, and a second two-way table for Race and BMIcats.
+```{r}
+#table_name <- xtabs(~ Variable1 + variable2, data=dataset name)
+#table_name (to print the table)
+
+```
+Describe the variation that you see in these two frequency tables.
+
+5. Complete the same analysis above using two other nominal or ordinal variables. Explain what variables you choose and what results you see. (Note, you will have to insert a new code chunk below).
+
+
+6. Create a three-way table using gender, HHFoodSec, and BMIcat. Below the output, describe the variation that you observe in this three-way table.
+```{r}
+#table_name <- xtabs(~ Variable1+Variable2+Variable3, data=dataset_name)
+
+
+#a different way to neatly display the same 3-way table: ftable(table_name)
+
+```
+
+
