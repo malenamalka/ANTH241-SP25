@@ -1,0 +1,108 @@
+---
+title: "Exercise 5"
+output: html_document
+date: "2025-02-17"
+---
+
+For this exercise, you will generate measures of central tendency and dispersion (descriptive statistics) for continuous (numerical) variables in the NHANES 2017-2018 data set.
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANES_data)
+
+```
+
+1. We will use base R to generate mean, median, and range for BMI, ArmCircumf, and WaistCircumf
+```{r}
+#calculate mean, median, and range for BMI, ArmCircumf, and WaistCircumf using base R:
+#mean(data$variable, na.rm=TRUE)
+#median(data$variable, na.rm=TRUE)
+#range(data$variable, na.rm=TRUE)
+
+```
+
+2. Generating descriptive statistics using the summary() function in base R. Summary() provides minimum, maximum, quantiles, and mean for numerical variables
+```{r}
+#descriptive statistics using summary() in base R to provide minimun, maximum, quantiles, and mean fo all continuous variables in NHANESdata:
+#object_name <- c("variable1", "variable2", etc.)
+#summary(data[objectname])
+
+```
+
+
+3. Generating descriptive statistics for continuous variables using the tidyr and dplyr packages:
+```{r}
+#Using NHANES data, what are means, standard deviations, and counts of body measures (Age, BMI, ArmCircumf, and WaistCircumf)?
+#library(tidyr)
+#library(dplyr)
+#data%>% 
+#drop_ma(variable)%>% 
+#summarize(mean(Variable), sd(Variable), count=n())
+
+```
+Explain your findings starting on the line below:
+
+
+```{r}
+#What are the means, standard deviations, and counts of household economic variables (SMSpend and RFITP)?
+
+```
+Explain your findings starting in the line below.
+
+
+```{r}
+#What are the means, standard deviations, and counts for total calories, total sugars, and total fiber intake?
+
+```
+Explain your findings starting in the line below.
+
+
+```{r}
+#What are the means, standard deviations, and counts for the activity variables:
+#note that we need to use the "filter" function in dplyr to eliminate the responses of "7777" and "9999" for these variables.
+#data%>% 
+#drop_na(Variable)%>% 
+#filter(Variable<??)%>% 
+#summarize (mean(Variable), sd(Variable), count= n()))
+
+```
+Explain your findings starting in the line below.
+
+
+4. Generating the descriptive statistics of continuous variables by nominal or ordinal groups using the "group by" function in the dplyr package:
+```{r}
+#Find mean, standard deviation, and count for BMI and WaistCircumf by gender
+#data%>%
+#group_by (grouping Variable)%>%
+#drop_na(Variable)%>%
+#summarize(mean(variable), sd(variable), count=n())
+
+```
+Explain your findings starting in the line below:
+
+
+```{r}
+#Find the mean, standard deviation, and count for each household economic variable (RFITP and SMSpend) by HHeducation
+
+```
+Explain your findings starting on the next line:
+
+
+```{r}
+#Generate the mean, standard deviation, and counts for dietary protein and fat intake by race.
+
+```
+Describe your findings on the line below:
+
+
+```{r}
+#Generate means, standard deviations, and counts for all activity variables by BMIcat:
+#note that the activity level variables need to be filtered to use only those cases below certain levels. Use the filter function in dplyr to accomplish this. See the NHANES variable list for details.
+
+```
+Describe your findings on the line below.
+
+
