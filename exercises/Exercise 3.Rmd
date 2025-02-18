@@ -27,16 +27,15 @@ library(foreign)
 Exercise 6.1.4
 ```{r}
 #a. Creating a vector "x" with the values, 1,2, and 3
-
-#b. Creating a vector "y" with the values "yes" and "no"
-
+x <- c(1,2,3)
+#b. Creating a vector "y" with the values "yes", "no" and "maybe"
+y <- c("yes", "no", "maybe")
 #Create a data frame with the x and y vectors created above:
-
+dat <- data.frame(x,y)
 #Write "dat" below will display the data frame
-
+dat
 #We can also single out the second column (vector 7) using the $ operator
-
-
+dat$y
 ```
 
 To see what happens when you make an error, let's attempt to assign a value of variable W to variable Z
@@ -65,78 +64,104 @@ head(party_data)
 Now we will complete some exercises in the Kabacoff book that introduce using R and R studio. Follow along in chapters 1 and 2 in that book. The exercises below are taken directly from those two chapters.
 ```{r}
 #This is listing 1.1 from page 9 in Kabacoff, in which we create a database with two variables (age and weight)
-
+age <- c(1,3,5,2,11,9,3,9,12,3)
+weight <- c(4.4, 5.3, 7.2, 5.2, 8.5, 7.3, 6.0, 10.4, 10.2, 6.1)
+mean(weight)
+sd(weight)
+cor(age,weight)
+plot(age,weight)
 ```
 
 Kabacoff, listing 2.1, page 24 on creating matrices:
 ```{r}
 #1. Creating a 5x4 matrix
+y <- matrix(1:20, nrow=5, ncol=4)
+y
+cells <- c(1,26,24,68)
+rnames <- c("R1", "R2")
+cnames <- c("C1", "C2")
 
 ```
 
 ```{r}
 #2: create a 2x2 matrix filled by rows
-
+mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=TRUE,
+                   dimnames=list(rnames, cnames))
+mymatrix
 ```
 
 ```{r}
-#3. Create a 2x2 matrix filled by columns
-
+#Create a 2x2 matrix filled by columns
+mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=FALSE,
+                   dimnames=list(rnames, cnames))
+mymatrix
 ```
 
 Kabacoff, Listing 2.2 p. 24:
 ```{r}
 #Using matrix subscripts
 #First, create a 2x5 matrix containing numbers 1-10
-
+x <- matrix(1:10, nrow=2)
+x
 #second, the elements in the second row are selected
-
+x[2,]
 #third, the elements in the second column are selected
-
+x[,2]
 #Fourth, the elements in the first and fourth column are selected
-
+x[1,4]
 #finally, the elements in the first row and fourth and fifth columns are selected
-
+x[1, c(4,5)]
 ```
 
 Kabacoff, listing 2.3, p. 25
 ```{r}
 #Creating a three-dimensional (2x3x4) array of numbers
-
+dim1 <- c("A1", "A2")
+dim2 <- c("B1", "B2", "B3")
+dim3 <- c("C1", "C2", "C3", "C4")
+z <- array(1:24, c(2,3,4), dimnames=list(dim1, dim2, dim3))
+z
 ```
 
 Kabacoff, listing 2.4, p. 26
 ```{r}
 #Creating a data frame
-
+patientID <- c(1, 2, 3, 4)
+age <- c(25,34,28,52)
+diabetes <- c("Type1", "Type2", "Type1", "Type1")
+status <- c("Poor", "Improved", "Excellent", "Poor")
+patientdata <- data.frame(patientID, age, diabetes, status)
+patientdata
 ```
 
 Kabacoff, listing 2.5, p. 26-27
 ```{r}
 #Specifying elements of a data frame
 #1. To specify the first two columns of the data frame, patientID and age
-
-#2. To specify the columns, "diabetes" and "status":
-
-#3, To show the column, "age"
-
+patientdata[1:2]
+#2. To specify the columns, diabetes and status:
+patientdata[c("diabetes", "status")]
+#3, To show the column, age
+patientdata$age
 ```
 
 Kabacoff, listing 2.6, pp. 29-30
 ```{r}
 #Using factors:
 #1. Enter data as vectors:
-
-#the statement below indicates that diabetes is a nominal variable (factor variable)
+patientID <- c(1, 2, 3, 4)
+age <- c(25, 34, 28, 52)
+diabetes <- c("Type1", "Type2", "Type1", "Type1")
+status <- c("Poor", "Improved", "Excellent", "Poor")
 diabetes <- factor(diabetes)
-
-#the statement below indicates that status is an ordinal variable that R treats as a factor in an ordered sequence.
+#the above statement indicates that diabetes is a nominal variable (factor variable)
 status <- factor(status, order=TRUE)
-
-#2. Display the object structure to show that diabetes is a factor and status is an ordered factor
-
-#3. Display the object summary to show minimum, maximum, mean, and quartiles for continuous variable age and frequency counts for categorical variables, diabetes and status
-
+#the above statement indicates that status is an ordinal variable that R treats as a factor in an ordered sequence.
+patientdata <- data.frame(patientID, age, diabetes, status)
+#2. Displays the object structure to show that diabetes is a factor and status is an ordered factor
+str(patientdata)
+#3. Displays the object summary to show minimum, maximum, mean, and quartiles for continuous variable age, and it also shows frequency counts for categorical variables, diabetes and status
+summary(patientdata)
 ```
 
 Kabacoff, Listing 2.7, p. 30
