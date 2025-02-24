@@ -7,6 +7,11 @@ date: "2025-02-17"
 For this exercise, you will generate measures of central tendency and dispersion (descriptive statistics) for continuous (numerical) variables in the NHANES 2017-2018 data set.
 ```{r}
 #Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
 
 ```
 
@@ -16,14 +21,14 @@ For this exercise, you will generate measures of central tendency and dispersion
 #mean(data$variable, na.rm=TRUE)
 #median(data$variable, na.rm=TRUE)
 #range(data$variable, na.rm=TRUE)
+#BMI:
 mean(NHANESdata$BMI, na.rm = TRUE)
 median(NHANESdata$BMI, na.rm = TRUE)
 range(NHANESdata$BMI, na.rm=TRUE)
-86.2-12.3
 mean(NHANESdata$ArmCircumf, na.rm=TRUE)
 median(NHANESdata$ArmCircumf, na.rm=TRUE)
 range(NHANESdata$ArmCircumf, na.rm=TRUE)
-mean(NHANESdata$WaistCircumf, na.rm=TRUE)
+mean(NHANESdata$WaistCircumf,na.rm=TRUE)
 median(NHANESdata$WaistCircumf, na.rm=TRUE)
 range(NHANESdata$WaistCircumf, na.rm=TRUE)
 ```
@@ -31,26 +36,32 @@ range(NHANESdata$WaistCircumf, na.rm=TRUE)
 2. Generating descriptive statistics using the summary() function in base R. Summary() provides minimum, maximum, quantiles, and mean for numerical variables
 ```{r}
 #descriptive statistics using summary() in base R to provide minimun, maximum, quantiles, and mean fo all continuous variables in NHANESdata:
-#object_name <- c("variable1", "variable2")
+#object_name <- c("variable1", "variable2", etc.)
 #summary(data[objectname])
-numeric_vars <- c("BMI", "ArmCircumf", "WaistCircumf", "Age", "RFITP")
-numeric_vars_diet <- c("DR1TKCAL", "DR1TPROT", "DR1TCARB", "DR1TSUGR", "DR1TFIBE", "DR1TTFAT")
-numeric_vars_activity <- c("Vigorous", "Moderate", "Sedentary")
-summary(NHANESdata[numeric_vars])
-summary(NHANESdata[numeric_vars_diet])
+#household economy variables - RFITP, SMSpend
+HHeconomy <- c("RFITP", "SMSpend")
+summary(NHANESdata[HHeconomy])
 ```
+```{r}
+dietary_vars <- c("DR1TKCAL", "DR1TPROT", "DR1TCARB", "DR1TSUGR", "DR1TFIBE", "DR1TTFAT")
+summary(NHANESdata[dietary_vars]) 
+```
+
 
 3. Generating descriptive statistics for continuous variables using the tidyr and dplyr packages:
 ```{r}
 #Using NHANES data, what are means, standard deviations, and counts of body measures (Age, BMI, ArmCircumf, and WaistCircumf)?
-#library(tidyr)
-#library(dplyr)
-#data%>% drop_ma(variable)%>% summarize(mean(Variable), sd(Variable), count=n())
-NHANESdata %>%
-  summarize(mean(Age), sd(Age), count=n())
+library(tidyr)
+library(dplyr)
+#data%>% 
+#drop_na(variable)%>% 
+#summarize(mean(Variable), sd(Variable), count=n())
 NHANESdata%>%
   drop_na(BMI)%>%
   summarize(mean(BMI), sd(BMI), count=n())
+NHANESdata%>%
+  drop_na(Age)%>%
+  summarize(mean(Age), sd(Age), count=n())
 NHANESdata%>%
   drop_na(ArmCircumf)%>%
   summarize(mean(ArmCircumf), sd(ArmCircumf), count=n())
@@ -59,11 +70,15 @@ NHANESdata%>%
   summarize(mean(WaistCircumf), sd(WaistCircumf), count=n())
 ```
 Explain your findings starting on the line below:
-
+The mean BMI is 26.58 +/- 8.26 from a sample of 8,005 individuals.
+The mean age is 34.33 +/- 25.50 years from a sample of 9,254 individuals
+The mean arm circumference is 29.19 +/- 7.97 cm from a sample of 8,173 individuals.
+The mean waist circumference is 89.93 +/- 22.81 cm from a sample of 7,601 individuals.
 
 ```{r}
 #What are the means, standard deviations, and counts of household economic variables (SMSpend and RFITP)?
 NHANESdata%>%
+  filter(SMSpend<4286)%>%
   drop_na(SMSpend)%>%
   summarize(mean(SMSpend), sd(SMSpend), count=n())
 NHANESdata%>%
@@ -71,7 +86,8 @@ NHANESdata%>%
   summarize(mean(RFITP), sd(RFITP), count=n())
 ```
 Explain your findings starting in the line below.
-
+The mean amount of groceries spent in one month per household is $454.67 +/- $326.34 out of a sample of 8,644 individuals.
+The mean ration of income to poverty is 2.38 +/- 1.60 from a sample of 8,023 individuals.
 
 ```{r}
 #What are the means, standard deviations, and counts for total calories, total sugars, and total fiber intake?
@@ -86,90 +102,144 @@ NHANESdata%>%
   summarize(mean(DR1TFIBE), sd(DR1TFIBE), count=n())
 ```
 Explain your findings starting in the line below.
-
+The mean amount of calories consumed per day is 1,985.16 +/- 988.64 kcal from a sample of 7,484 individuals.
+The mean amount of sugar consumed per day is 105.71 +/- 72.52 grams from a sample of 7,484 individuals.
+The mean amount of dietary fiber consumed per day is 15.33 +/- 10.30 grams from a sample of 7,484 individuals.
 
 ```{r}
 #What are the means, standard deviations, and counts for the activity variables:
 #note that we need to use the "filter" function in dplyr to eliminate the responses of "7777" and "9999" for these variables.
-#data%>% drop_na(Variable)%>% filter(Variable<??)%>% summarize (mean(Variable), sd(Variable), count= n()))
+#data%>% 
+#drop_na(Variable)%>% 
+#filter(Variable<??)%>% 
+#summarize (mean(Variable), sd(Variable), count= n()))
 NHANESdata%>%
   drop_na(Sedentary)%>%
-  filter(Sedentary< 1321)%>%
+  filter(Sedentary<1321)%>%
   summarize(mean(Sedentary), sd(Sedentary), count=n())
-NHANESdata%>%
-  drop_na(Vigorous)%>%
-  filter(Vigorous <481)%>%
-  summarize(mean(Vigorous), sd(Vigorous), count=n())
 NHANESdata%>%
   drop_na(Moderate)%>%
   filter(Moderate<541)%>%
   summarize(mean(Moderate), sd(Moderate), count=n())
+NHANESdata%>%
+  drop_na(Vigorous)%>%
+  filter(Vigorous<481)%>%
+  summarize(mean(Vigorous), sd(Vigorous), count=n()) 
 ```
 Explain your findings starting in the line below.
-
+The average amount of time people are sedentary is 331.68 +/- 199.15 minutes/day based on a sample of 5,811 individuals.
+The average amount of time people engage in moderate physical activity is 63.97 +/- 58.32 minutes/day based on a sample of 2,300 individuals.
+The average amount of time people engage in vigorous physical activity is 76.24 +/- 53.23 minutes/day based on a sample of 1,430 individuals
 
 4. Generating the descriptive statistics of continuous variables by nominal or ordinal groups using the "group by" function in the dplyr package:
 ```{r}
 #Find mean, standard deviation, and count for BMI and WaistCircumf by gender
-NHANESdata %>%
-  group_by(Gender) %>%
+#data%>%
+#group_by (grouping Variable)%>%
+#drop_na(Variable)%>%
+#summarize(mean(variable), sd(variable), count=n())
+NHANESdata%>%
+  group_by(Gender)%>%
   drop_na(BMI)%>%
   summarize(mean(BMI), sd(BMI), count=n())
-NHANESdata %>%
-  group_by(Gender) %>%
+NHANESdata%>%
+  group_by(Gender)%>%
   drop_na(WaistCircumf)%>%
   summarize(mean(WaistCircumf), sd(WaistCircumf), count=n())
+
 ```
 Explain your findings starting in the line below:
-
+Mean BMI in female identifying individuals is 26.98 +/- 8.80 from a sample of 4,108 individuals.
+Mean BMI in male identifying individuals is 26.16 +/- 7.63 from a sample of 3,897 individuals.
+Mean waist circumference is 88.73 +/- 22.36 cm in female identifying individuals based on a sample of 3,867 individuals.
+Mean waist circumference is 91.17 +/- 23.20 cm in male identifying individuals based on a sample of 3,734 individuals.
 
 ```{r}
 #Find the mean, standard deviation, and count for each household economic variable (RFITP and SMSpend) by HHeducation
-NHANESdata %>%
-  group_by(HHEducation) %>%
+NHANESdata%>%
+  group_by(HHEducation)%>%
   drop_na(RFITP)%>%
   summarize(mean(RFITP), sd(RFITP), count=n())
-NHANESdata %>%
-  group_by(HHEducation) %>%
+NHANESdata%>%
+  group_by(HHEducation)%>%
+  filter(SMSpend<4286)%>%
   drop_na(SMSpend)%>%
   summarize(mean(SMSpend), sd(SMSpend), count=n())
 ```
 Explain your findings starting on the next line:
-
+The mean ratio of family income to poverty index is:
+- 1.38 +/- 1.11 for heads of households with less than a high school degree from a sample of 1,357 individuals
+-2.16 +/- 1.45 for heads of households with a high school diploma and some college education from a sample of 4,495 individuals
+-3.61 +/- 1.52 for heads of households with a college degree or more years of higher education from a sample of 1,900 individuals.
+The mean amount of money spent on groceries per week is:
+-$489.33 +/- $354.81 for heads of households with less than a high school degree from a sample of 1,526 individuals.
+-$424.14 +/- $311.68 for heads of households with a high school diploma and some college education from a sample of 4,812 individuals.
+- $488.81 +/- $321.80 for heads of households with a college degree or more years of higher education from a sample of 2,003 individuals.
 
 ```{r}
 #Generate the mean, standard deviation, and counts for dietary protein and fat intake by race.
-NHANESdata %>%
-  group_by(Race) %>%
+NHANESdata%>%
+  group_by(Race)%>%
   drop_na(DR1TPROT)%>%
   summarize(mean(DR1TPROT), sd(DR1TPROT), count=n())
-NHANESdata %>%
-  group_by(Race) %>%
+NHANESdata%>%
+  group_by(Race)%>%
   drop_na(DR1TTFAT)%>%
   summarize(mean(DR1TTFAT), sd(DR1TTFAT), count=n())
 ```
 Describe your findings on the line below:
+The daily protein intake for people who identify to the following racial groups is:
+76.75 +/- 42.79 grams in Mexican Americans (n=1,087)
+71.66 +/- 41.90 grams in Multiracial individuals (n=516)
+76.28 +/- 41.34 grams in Non-Hispanic Asians (n=873)
+68.75 +/- 41.24 grams in Non-Hispanic Blacks (n=1,745)
+72.77 +/- 40.47 grams in Non-Hispanic Whites (n=2,634)
+72.77 +/- 43.68 grams in Other Hispanic individuals (n=629)
 
+The daily fat intake for people who identify to the following racial groups is:
+79.18 +/- 45.84 grams in Mexican Americans (n=1,087)
+80.89 +/- 50.39 grams in Multiracial individuals (n=516)
+72.09 +/- 39.02 grams in Non-Hispanic Asians (n=873)
+80.93 +/- 50.43 grams in Non-Hispanic Blacks (n=1,745)
+82.99 +/- 46.88 grams in Non-Hispanic Whites (n=2,634)
+73.80 +/- 48.81 grams in Other Hispanic individuals (n=629)
 
 ```{r}
 #Generate means, standard deviations, and counts for all activity variables by BMIcat:
 #note that the activity level variables need to be filtered to use only those cases below certain levels. Use the filter function in dplyr to accomplish this. See the NHANES variable list for details.
-NHANESdata %>%
-  group_by(BMIcat) %>%
+NHANESdata%>%
+  group_by(BMIcat)%>%
+  filter(Sedentary<1321)%>%
   drop_na(Sedentary)%>%
-  filter(Sedentary< 1321)%>%
   summarize(mean(Sedentary), sd(Sedentary), count=n())
 NHANESdata%>%
   group_by(BMIcat)%>%
-  drop_na(Vigorous)%>%
-  filter(Vigorous<481)%>%
-  summarize(mean(Vigorous), sd(Vigorous), count=n())
+  filter(Moderate<541)%>%
+  drop_na(Moderate)%>%
+  summarize(mean(Moderate), sd(Moderate), count=n())
 NHANESdata%>%
   group_by(BMIcat)%>%
-  drop_na(Moderate)%>%
-  filter(Moderate<541)%>%
-  summarize(mean(Moderate), sd(Moderate), count=n())
+  filter(Vigorous<481)%>%
+  drop_na(Vigorous)%>%
+  summarize(mean(Vigorous), sd(Vigorous), count=n())
+
 ```
 Describe your findings on the line below.
+The amount of time spent in sedentary activity by BMI categories are:
+313.44 +/- 190.85 minutes/day for people in the healthy BMI category (n=1,364).
+351.75 +/- 206.90 min./day for people in the obese BMI category (n=2,217).
+319.14 +/- 194.77 min./day for people in the overweight BMI category (n=1,716).
+305.43 +/- 169.81 min.day for people in the underweight BMI category (n=416).
 
+The amount of time spent in moderate physical activity by BMI categories are:
+63.10 +/- 59.91 min./day for people in the healthy BMI category (n=600).
+64.03 +/- 60.89 min./day for people  in the obese BMI category (n=808).
+63.09 +/- 51.57 min./day for people in the overweight BMI category (n=717).
+54.41 +/- 42.17 min./day for people in the underweight BMI category (n=34).
 
+The amount of time spent in vigorous physical activity by BMI categories are:
+76.56 +/- 51.21 min./day for healthy BMI (n=424).
+74.32 +/- 50.38 min./day for obese BMI (n=434).
+76.59 +/- 55.43 min/day for overweight BMI (n=461).
+79.72 +/- 47.94 min/day for underweight BMI (n=18).
+ 
