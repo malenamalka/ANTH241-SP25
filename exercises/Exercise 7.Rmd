@@ -1,0 +1,90 @@
+---
+title: "Exercise 7"
+output: html_document
+date: "2025-02-26"
+---
+For this exercise, you will practice detecting if there are significant differences in a continuous variable across two or more levels of catgorical (nominal and ordinal) variables. These kinds of statistical procedures are generally referred to as bivariate statistics.
+
+1. If you need to reload the NHANES data and label the ordinal and nominal variables as factor variables, you should run the code chunk below:
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
+```
+
+2. Run the code chunk below to install and load the packages that we will use in this exercise:
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+install.packages("dunn.test")
+library(dunn.test)
+```
+
+3. T-tests compare the variation of a continuous variable across two levels of a categorical (nominal and ordinal) variable. 
+```{r}
+#3a. What are the means, standard deviations, and counts for BMI by gender?
+
+#Let's hypothesize that there is a significant difference in BMI by gender in the NHANES 2017-2018 sample. What is the null hypothesis? What is the alternative hypothesis? We will test this hypothesis using the method shown in S&B, section 7.1.2
+#1. histogram of continuous variable: hist(data$contvar)
+
+#2. F-test to see if the variance in the continuous variable is the same for the different levels of the categorical variable: 
+#var.test(Contvar~Catvar, data=, alternative="two.sided")
+
+#3. According to S&B, if the variances are not equal, we should run the T-test anyways: t.test(Contvar~Catvar, var.equal=FALSE, data=)
+
+```
+Question: Does the above T-test support the null hypothesis or the alternative hypothesis?
+
+```{r}
+#3b: Does the amount of daily sedentary time differ in people with and without health insurance? What is the null hypothesis? What is the alternative hypothesis?
+#1. Find the descriptive statistics (mean, sd, and counts) of BMI by presence/absence of health insurance. 
+#a. Below, I filter out levels of health insurance that are above 2 into a new database to ensure that the 7s and 9s are not part of the analysis.
+NHANES_healthins <- NHANESdata%>%
+  filter(HealthIns<3)
+NHANES_healthins%>%
+  drop_na(BMI)%>%
+  group_by(HealthIns)%>%
+  summarize(mean(BMI), sd(BMI), count=n())
+#2. Run a test to see if the variances of the continuous variable are equal across different levels of the categorical variable:
+#var.test(Contvar~Catvar, data=, alternative="two.sided")
+
+#3. We will run the T-test with the following code:
+#t.test(Contvar~Catvar, var.equal=TRUE, data=)
+
+```
+Does the above T-test support or refute the alternative hypothesis?
+
+3c. Generate a hypothesis that tests if daily caloric intake differs in people who identify as female from people who identify as male. What are the null and alternative hypotheses? Run a T-test by replicating the methods above. What are your results? Do your results support or refute the alternative hypothesis?
+
+4. Testing for significant differences in a continuous variable across three or more categorical levels. Both S&B and Kabacoff introduce you to analysis of variance (ANOVA) as the statistical method to make these comparisons. What they show you is all good. However, I would like to introduce you to a non-parametric test that is more appropriate to the NHANES data as it applies to variables that are not normally distributed. This method is similar to ANOVA, it is easy to implement, and it provides results that are easy to interpret. 
+
+The non-parametric statistical test that is a substitute for ANOVA is called the Kruskal-Wallis test. It shows if there is a significant difference in the means and variance of a continuous variable across three or more categorical levels when the continuous variable is not normally distributed. After the Kruskal-Wallis test, a post-hoc test called the Dunn Test, identifies the specific bivariate comparisons that significantly differ from each other.
+
+Here is an example:
+```{r}
+#4a. Does daily caloric intake differ by BMI categories? What is the null hypothesis? What is the alternative hypothesis?
+#1. Generate summary statistics of daily caloric intake by BMI cateogories?
+
+#2. Generate a boxplot of daily caloric intake by BMI categories to visualize the summary statistics
+
+#3. Run the Kruskal-Wallis test and the post-hoc Dunn test to see if there are any significant differences in daily caloric intake by BMI categories. The code for the Kruskal-Wallis and Dunn test is: 
+#dunn.test(x=data$contvar, g=data$catvar, kw=TRUE)
+
+```
+Does the above test support or refute the alternative hypothesis? If it supports the alternative hypothesis, which categorical levels significantly differ from each other? Explain your findings.
+
+```{r}
+#4b. Does the ratio of monthly income to poverty differ by the head of household's education level? What is the null hypothesis? What is the alternative hypothesis?
+#1. Generate descriptive statistics of RFITP by HHEducation levels?
+
+#2. Run the Kruskal-Wallis and Dunn tests:
+
+```
+Explain your results here.
+
+#5. Run your own Kruskal-Wallis and Dunn test below based on comparing a continuous variable across a nominal or ordinal variable with three or more levels. Show your work in the code chunk and interpret your findings.
+
