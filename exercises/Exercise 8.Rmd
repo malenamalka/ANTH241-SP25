@@ -1,0 +1,48 @@
+---
+title: "Exercise 8"
+output: html_document
+date: "2025-03-05"
+---
+For this exercise, we will practices testing for significant differences between two categorical variables. The procedure involves first generating a two-way frequency table, which we worked on in exercise 4. Then we will conduct a chi-square test on that frequency table to see if there are significant differences across the levels of that frequency table.
+
+1. If you need to download the NHANES data base and code the nominal and ordinal variables as factors, please run this code chunk below:
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
+```
+
+2. Load the following packages that you will use in this exercise.
+```{r}
+library(dplyr)
+library(tidyr)
+```
+
+3. Let's examine the relationship between BMI categories and household food security:
+```{r}
+#a. Generate a two-way frequency table of BMIcat and HHFoodSec:
+#table_name <- xtabs(~ CatVar1 + CatVar2, data=)
+#print the table
+#show the table in percentages: prop.table(table_name)*100
+
+#b. run the chi-square test:
+#chisq.test(table_name)
+
+```
+
+4. Compare Gender and Race:
+```{r}
+#a. generate a frequency table by raw counts and percentages
+
+#b. run the Chi-square test on that table.
+
+```
+
+Let's compare BMIcat by Education level
+```{r}
+
+```
+
