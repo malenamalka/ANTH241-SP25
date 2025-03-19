@@ -1,0 +1,96 @@
+---
+title: "Exercise 9"
+output: html_document
+date: "2025-03-19"
+---
+For this exercise, you will practice creating correlations between two continuous variables and illustrating these relationships as scatter plots.
+
+1. You should download the NHANES data and label the nominal and ordinal variables as factors if you need to.
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
+```
+
+2. The following code opens the packages that you will need for this exercise.
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+3. Some of the continuous variables contain cells that code for "don't know" or "refused" (e.g, 7777s and 9999s). The code chunk below removes these cells.
+```{r}
+NHANESdata_reduced <- NHANESdata%>%
+  filter(SMSpend<4286, Vigorous<481, Moderate<541, Sedentary<1321)
+head(NHANESdata_reduced)
+```
+
+4. Create a scatterplot of BMI and Waist Circumference and generate a Pearson correlation between these two variables:
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Questions: What is the Pearson correlation coefficient of BMI and Waist Circumference? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+
+5. Generate a scatter plot and Pearson correlation test of the relationship between BMI and daily sugar intake (DR1TSUGR)
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Question: What is the Pearson correlation coefficient of BMI and daily sugar intake? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis? 
+
+6. Generate a scatter plot and correlation test of BMI and daily fat intake (DR1TTFAT)?
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Question: What is the Pearson correlation coefficient of BMI and daily fat intake? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+
+7. Generate a scatter plot and correlation test of the relationship between BMI and moderate daily exercise:
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Question: What is the Pearson correlation coefficient of BMI and moderate daily exercise? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+
+7. Generate a scatter plot and Pearson correlation test for the relationship between BMI and daily sedentary minutes.
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Question: What is the Pearson correlation coefficient of BMI and daily sedentary minutes? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+
+8. Generate a scatter plot and Pearson correlation test of the relationship between BMI and money spent at the grocery store (SMSpend).
+a. What is the null hypothesis?
+b. What is the alternative hypothesis?
+```{r}
+#scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+
+```
+Question: What is the Pearson correlation coefficient of BMI and money spent at the grocery store? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+
