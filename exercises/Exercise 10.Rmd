@@ -1,0 +1,68 @@
+---
+title: "Exercise 10"
+output: html_document
+date: "2025-03-23"
+---
+For exercise 10, you will practice generating OLS regression models that predict the outcome of a continuous dependent variable from a continuous independent variable.
+
+1. If necessary, download the NHANES data set and label the ordinal and nominal variables as factor variables.
+
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
+```
+
+2. If necessary, use the code chunk below to remove the cells with 7777s and 9999s, etc. from some of the continuous variables.
+```{r}
+NHANESdata_reduced <- NHANESdata%>%
+  filter(SMSpend<4286, Vigorous<481, Moderate<541, Sedentary<1321)
+head(NHANESdata_reduced)
+```
+
+3. Generate a linear regression model that predicts BMI (depedent variable) from waist circumference (independent variable).
+```{r}
+#model_name <- lm(DepVar~IndVar, data=)
+#summary(model_name)
+```
+What is the regression equation for this model?
+
+What is the multiple R-squared value for this equation?
+
+What is the p-value?
+
+What do these results indicate about the relationship between BMI and waist circumference?
+
+4. Generate a linear regression model that predicts BMI from RFITP. Insert a code chunk to create this regression model.
+
+
+Questions: What is the linear regression equation of this model? 
+What is the multiple R-squared value? 
+What is the p-value of the model? 
+What do these results indicate about the relationship between BMI and RFITP?
+
+
+5. Generate a linear regression model that predicts BMI from daily caloric intake (DR1TKCAL). After you create and run the model in a new code chunk below, answer the same questions as above. 
+
+
+6. Do the same steps as above for BMI predicted from daily carbohydrate intake.
+
+
+7. Do the same steps as above for BMI predicted from daily sugar intake.
+
+
+8. Do the same steps as above for BMI predicted from daily fat intake.
+
+
+9. Do the same steps as above for BMI predicted from vigorous daily exercise.
+
+
+10. Do the same steps as above for BMI predicted from sedentary minutes per day.
+
+
+After generating these 10 regression models, what can you conclude about the relationship between being overweight or obese with dietary intake and physical activity?
+
+
