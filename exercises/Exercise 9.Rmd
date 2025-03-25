@@ -30,33 +30,50 @@ head(NHANESdata_reduced)
 
 4. Create a scatterplot of BMI and Waist Circumference and generate a Pearson correlation between these two variables:
 a. What is the null hypothesis?
+There is no correlation between BMI and Waist Circumference.
 b. What is the alternative hypothesis?
+There is a correlation between BMI and Waist Circumference.
 ```{r}
 #scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
-
+NHANESdata%>%
+  filter(SMSpend<4286, Vigorous<481, Moderate<541, Sedentary<1321) %>% 
+  ggplot(.,aes(x=BMI,y=WaistCircumf)) + geom_point(color=3) + geom_smooth(method=lm) +theme_bw()
 #correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
-
+cor.test(NHANESdata_reduced$BMI,NHANESdata_reduced$WaistCircumf,method = 'pearson')
 ```
 Questions: What is the Pearson correlation coefficient of BMI and Waist Circumference? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
+0.90 There is significant evidence to suggest that there exists a strong positive relationship between BMI and Waist Circumference.We must H0 and support the alternative hypothesis.
 
 5. Generate a scatter plot and Pearson correlation test of the relationship between BMI and daily sugar intake (DR1TSUGR)
 a. What is the null hypothesis?
+There is no correlation between BMI and daily sugar intake
 b. What is the alternative hypothesis?
 ```{r}
 #scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
-
+NHANESdata_reduced %>% 
+  ggplot(.,aes(BMI,DR1TSUGR)) +
+  geom_point(color="lightblue") +
+  geom_smooth(method=lm, color="navy") +
+  theme_bw()
 #correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
-
+cor.test(NHANESdata_reduced$BMI,NHANESdata_reduced$DR1TSUGR)
 ```
 Question: What is the Pearson correlation coefficient of BMI and daily sugar intake? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis? 
-
+The correlation coefficient is -0.06. Given that the p-value is < 0.05, there is no significant evidence to suggest that there is a correlation between bmi and daily sugar intake. Thus, we fail to reject the H0.
 6. Generate a scatter plot and correlation test of BMI and daily fat intake (DR1TTFAT)?
 a. What is the null hypothesis?
+There is no correlation between bmi and daily fat intake
 b. What is the alternative hypothesis?
+There is a correlation between bmi and daily fat intake (assuming a positive correlation)
 ```{r}
 #scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
-
+NHANESdata_reduced %>% 
+  ggplot(.,aes(BMI,DR1TTFAT)) +
+  geom_point(color="orange") +
+  geom_smooth(method=lm, color="red") +
+  theme_bw()
 #correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+cor.test(NHANESdata_reduced$BMI,NHANESdata_reduced$DR1TTFAT)
 
 ```
 Question: What is the Pearson correlation coefficient of BMI and daily fat intake? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
@@ -77,6 +94,13 @@ a. What is the null hypothesis?
 b. What is the alternative hypothesis?
 ```{r}
 #scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
+NHANESdata_reduced %>% 
+  ggplot(.,aes(BMI,Sedentary)) +
+  geom_point(color="orange") +
+  geom_smooth(method=lm, color="red") +
+  theme_bw()
+#correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
+cor.test(NHANESdata_reduced$BMI,NHANESdata_reduced$Sedentary)
 
 #correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
 
