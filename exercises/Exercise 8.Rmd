@@ -27,22 +27,29 @@ library(tidyr)
 #table_name <- xtabs(~ CatVar1 + CatVar2, data=)
 #print the table
 #show the table in percentages: prop.table(table_name)*100
-
+BMIcat_FS_table <- xtabs(~ BMIcat + HHFoodSec, data=NHANESdata)
+BMIcat_FS_table
+prop.table(BMIcat_FS_table)*100
 #b. run the chi-square test:
 #chisq.test(table_name)
-
+chisq.test(BMIcat_FS_table)
 ```
 
 4. Compare Gender and Race:
 ```{r}
 #a. generate a frequency table by raw counts and percentages
-
+Gender_race_table <- xtabs(~ Gender + Race, data=NHANESdata)
+Gender_race_table
+prop.table(Gender_race_table)*100
 #b. run the Chi-square test on that table.
-
+chisq.test(Gender_race_table)
 ```
 
 Let's compare BMIcat by Education level
 ```{r}
-
+BMIcat_Education_table <- xtabs(~ BMIcat + Education, data=NHANESdata)
+BMIcat_Education_table
+prop.table(BMIcat_Education_table)*100
+chisq.test(BMIcat_Education_table)
 ```
 

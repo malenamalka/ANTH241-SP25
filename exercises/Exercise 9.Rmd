@@ -113,8 +113,12 @@ b. What is the alternative hypothesis?
 ```{r}
 #scatter plot code: #ggplot(aes(x=DepVar, y=IndVar), data=) + geom_point(color="") + geom_smooth(method=lm, color="") + labs(x="", y="") + theme_bw()
 
+ggplot(aes(x=BMI, y=SMSpend), data=NHANESdata_reduced) +
+  geom_point(color="blue") +
+  labs(x="BMI", y="Money spent on groceries") + theme_bw()
 #correlation test code: cor.test(data$DepVar, data$IndVar, method="pearson")
 
+cor.test(NHANESdata_reduced$BMI, NHANESdata_reduced$SMSpend, method="pearson")
 ```
 Question: What is the Pearson correlation coefficient of BMI and money spent at the grocery store? Is this correlation coefficient significant? Finally, what do these statistics indicate about the null/alternative hypothesis?
 
