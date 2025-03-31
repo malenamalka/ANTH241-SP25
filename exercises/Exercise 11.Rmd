@@ -1,0 +1,151 @@
+---
+title: "Exercise 11"
+output: html_document
+date: "2025-03-30"
+---
+In this exercise, we will practice analysis of variance (ANOVA) and the Tukey post-hoc test. ANOVA compares the means and ranges of a continous variable across three or more categorical (nominal and ordinal) variables. The Tukey post-hoc test is one of many methods that indicate which level(s) of categorical variables significantly differ from the other levels when the ANOVA test is significant. 
+
+Please remember that ANOVA is a common statistical method to compare means of a continous variable across three or more categorical levels when the the sample variance is homogenous. When the sample variance departs form homogeneity, it is appropriate to use a non-parametric statistical test. Earlier in the semester, we learned the Kruskal-Wallis test and the post-hoc Dunn test as the non-parametric alternative. 
+
+1. Download the NHANES data and code all nominal and ordinal variables as factors (if necessary).
+```{r}
+#Use this code chunk to download the NHANES 2017-2018 database and to label the nominal and ordinal variables as factor variables (if necessary):
+NHANESdata <- read.csv("https://raw.githubusercontent.com/malenamalka/ANTH241-SP25/refs/heads/main/data/NHANES2017-28")
+factor(c(NHANESdata$Gender, NHANESdata$Race, NHANESdata$HealthIns))
+factor(c(NHANESdata$Education,NHANESdata$HHEducation,NHANESdata$HHIncome,NHANESdata$FeelBad,NHANESdata$HHFoodSec),order=TRUE)
+factor(NHANESdata$BMIcat, order =TRUE, levels = c("Underweight","Healthy","Overweight","Obese"))
+head(NHANESdata)
+```
+
+2. Load the packages that we will use for this exercise.
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(dunn.test)
+```
+
+3. Use the code below to remove the "7777s" and "9999s" etc. from the continuous variables (if necessary).
+```{r}
+NHANESdata_reduced <- NHANESdata%>%
+  filter(SMSpend<4286, Vigorous<481, Moderate<541, Sedentary<1321)
+head(NHANESdata_reduced)
+```
+
+4. Complete an ANOVA of Age by BMIcat. We will follow the steps that Kabakoff takes in his chatper on ANOVA to 1.) show summary statistics, 2.) run the ANOVA, and then 3.) graph the mean differences in age by BMIcat.
+```{r}
+#1. find summary statistics of sample sizes, means, standard deviations, and 95% confidence intervals
+plotdata<- NHANESdata_reduced%>%
+  filter(Age>19)%>%
+  group_by(BMIcat)%>%
+  summarize (n=n(),
+             mean = mean(Age),
+             sd=sd(Age),
+             ci=qt(0.975, df=n-1)*sd/sqrt(n))
+plotdata
+#2. test for group differences (ANOVA)
+fit <- aov(Age~BMIcat, data=NHANESdata_reduced)
+summary(fit)
+#3. Plot group means and confidence intervals to visualize these group differences.
+library(ggplot2)
+ggplot(plotdata, aes(x=BMIcat, y=mean, group = 1)) +
+  geom_point(size=1, color="red") +
+             geom_errorbar(aes(ymin=mean-ci,
+                               ymax=mean+ci),
+                           width=.1) +
+               theme_bw() +
+               labs(x="BMI category",
+                    y="Age in years",
+                    title = "BMI category and Age with 95% CI")
+```
+Questions:
+a. What is the F-value in the ANOVA test?
+b. What is the p-value in the ANOVA test?
+c. Does this ANOVA test indicate that there are significant differences in the comparisons of mean age by BMI category?
+
+
+5. [Complete this step only if there is a significant F-value in the ANOVA.] Run the post-hoc test to find out which pairwise comparisons significantly differ from each other. The pairwise comparisons that differ from each other are the ones that are driving the significant test result in the ANOVA. We will use the Tukey post hoc test. Bear in mind, that there are many post hoc tests to use.
+```{r}
+#1. calculates pairwise comparisons as a Tukey post hoc test
+pairwise <- TukeyHSD(fit)
+pairwise
+#2. create a data set of the above results
+BMIcat_Age_plot <- as.data.frame(pairwise[[1]])
+BMIcat_Age_plot$conditions <- row.names(BMIcat_Age_plot)
+#3. Plot the results
+ggplot(data=BMIcat_Age_plot, aes(x=conditions, y=diff)) +
+  geom_point(size=2, color="red") +
+  geom_errorbar(aes(ymin=lwr, ymax=upr, width=.2)) +
+  geom_hline(yintercept=0, color="red", linetype="dashed") +
+  labs(y="Differences in mean levels", x="",
+       title="95% family-wise confidence levels") +
+  theme_bw() +
+  coord_flip()
+```
+Question: Which pairwise comparisons of mean age by BMI category significantly differ from each other?
+
+
+6. Run the same process as step 4 to see if there are significant differences in mean daily fiber intake (DR1TFIBE) by BMI category (BMIcat)
+```{r}
+#1. find summary statistics of sample sizes, means, standard deviations, and 95% confidence intervals
+
+
+#2. test for group differences (ANOVA)
+
+
+#3. Plot group means and confidence intervals to visualize these group differences.
+
+
+```
+Questions:
+a. What is the F-value in the ANOVA test?
+b. What is the p-value?
+c. Does this ANOVA test indicate that there are significant differences in the comparisons of mean age by BMI category?
+
+
+7. Run the same post-hoc test process as step 5 if there are significant differences in the above ANOVA.
+```{r}
+#1. calculates pairwise comparisons as a Tukey post hoc test
+
+
+#2. create a data set of the above results
+
+
+#3. Plot the results
+
+```
+Question: Question: Which pairwise comparisons of mean age by BMI category significantly differ from each other?
+
+
+8. Run an ANOVA that compares mean SMSpend by food security level (HHFoodSec) following the example of step 6 above:
+```{r}
+
+
+#2. test for group differences (ANOVA)
+
+
+#3. Plot group means and confidence intervals to visualize these group differences.
+
+
+```
+Questions:
+a. What is the F-value of the ANOVA test?
+b. What is the p-value indicating if the F-value is significant?
+c. Does this ANOVA test indicate that there are significant differences in the comparisons of mean age by BMI category?
+
+
+9. Do you need to run the Tukey post-hoc test?
+
+10. Let's practice using the Kruskal-Wallis and post-hoc Dunn Test as the non-parametric ANOVA. [We learned this in exercise 7]. Let's see if there are differences moderate exercise activity by mental health status based on the "FeelBad" variable.
+```{r}
+#1. Generate descriptive stastics of Moderate by Feelbad
+#data_set%>%
+  #drop_na(DepVar)%>%
+  #group_by(IndVar)%>%
+  #summarize(mean(DepVar), sd(DepVar), count=n())
+
+#2. Run the Kruskal-Wallis and Dunn tests:
+#dunn.test(x=data_set$DepVar, g=data_set$IndVar, kw=TRUE)
+
+```
+Question: Are there significant differences between levels of mental health status and moderate exercise minutes?
