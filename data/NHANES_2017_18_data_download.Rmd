@@ -1,0 +1,106 @@
+---
+title: "NHANES2-17-18_downloads"
+output: html_document
+date: "2025-01-24"
+---
+On this R markdown file, I download 8 databases from NHANES 2017-2018. I download each one at a time. The first download will be the demography database: DEMO_J
+```{r}
+library(foreign)
+DEMO_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/DEMO_J.xpt")
+saveRDS(DEMO_J, file="/Users/weinstek/Documents/NHANES_2017_18_data/DEMO_J.xpt")
+```
+
+That worked! Now I will download dietary data: DR1TOT_J
+```{r}
+DR1TOT_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/DR1TOT_J.xpt")
+saveRDS(DR1TOT_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/DR1TOT_J.xpt")
+```
+
+Next dataset is examination data: BMX_J
+```{r}
+BMX_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/BMX_J.xpt")
+saveRDS(BMX_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/BMX_J.xpt")
+```
+
+consumer behavior database:
+```{r}
+CBQ_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/CBQ_J.xpt")
+saveRDS(CBQ_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/CBQ_J.xpt")
+```
+
+Food security:
+```{r}
+FSQ_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/FSQ_J.xpt")
+saveRDS(FSQ_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/FSQ_J.xpt")
+```
+
+Health insurance database:
+```{r}
+HIQ_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/HIQ_J.xpt")
+saveRDS(HIQ_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/HIQ_J.xpt")
+```
+
+Physical activity database:
+```{r}
+PAQ_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/PAQ_J.xpt")
+saveRDS(PAQ_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/PAQ_J.xpt")
+```
+
+Finally the mental health screen database:
+```{r}
+DPQ_J <- read.xport("/Users/weinstek/Documents/NHANES 2017-18 download/DPQ_J.xpt")
+saveRDS(DPQ_J, file="/Users/weinstek/Documents/NHANES 2017-18 data/DPQ_J.xpt")
+```
+
+Now I will create 8 new databases with each one containing the SEQN variable and the relevant variables that I will use in the NHANES analysis:
+First will be DEMO_J: the new database will be DEMO_J1 and will include variables: SEQN, RIAGENDR, RIDAGEYR, RIDRETH3, DEMEDUC2, DMDHREDZ, INDHHIN2, and INDFMPIR
+```{r}
+DEMOJ1 <- DEMO_J[c("SEQN","RIAGENDR", "RIDAGEYR", "RIDRETH3", "DMDEDUC2", "DMDHREDZ", "INDHHIN2", "INDFMPIR")]
+head(DEMOJ1)
+```
+
+The next merge will be DR1TOT_J1 with the following variables from DR1TOT_J: SEQN, DR1TKCAL, DR1TPROT, DR1TCARB, DR1TSUGR, DR1TFIBE, and DR1TTFAT
+```{r}
+DR1TOT_J1 <- DR1TOT_J[c("SEQN", "DR1TKCAL", "DR1TPROT", "DR1TCARB", "DR1TSUGR", "DR1TFIBE", "DR1TTFAT")]
+head(DR1TOT_J1)
+```
+
+The next database to whittle down is BMX_J to BMX_J1 with the following variables: SEQN, BMXBMI, BMXWAIST, BMXARMC
+```{r}
+BMX_J1 <- BMX_J[c("SEQN", "BMXBMI", "BMXARMC", "BMXWAIST")]
+head(BMX_J1)
+```
+
+Now consumer behavior database: create CBQ_J1 from CBQ_J with the folllowing variables: SEQN, CBD071
+```{r}
+CBQ_J1 <- CBQ_J[c("SEQN", "CBD071")]
+```
+
+Now food security: change FSQ_J to FSQ_J1 with the following variables: SEQN, FSDHH
+```{r}
+FSQ_J1 <- FSQ_J[c("SEQN", "FSDHH")]
+```
+
+Now health insurance: change HIQ_J to HIQ_J1 with the following variables: SEQN, HIQ011
+```{r}
+HIQ_J1 <- HIQ_J[c("SEQN", "HIQ011")]
+```
+
+Next is physical activity: PAQ_J becomes PAQ_J1 with the following variables: SEQN, PAD660, PAD675, PAD680
+```{r}
+PAQ_J1 <- PAQ_J[c("SEQN", "PAD660", "PAD675", "PAD680")]
+```
+
+Now we take mental health screen database: convert DPQ-J to DPQJ_1 with the following variables: SEQN, DPQ060
+```{r}
+DPQ_J1 <- DPQ_J[c("SEQN", "DPQ060")]
+```
+
+The next step is to merge the eight modified databases into one database: NHANES2017_18
+```{r}
+library(tidyverse)
+NHANES2017_18 <- list(BMX_J1, CBQ_J1, DEMOJ1, DPQ_J1, DR1TOT_J1, FSQ_J1, HIQ_J1, PAQ_J1)
+NHANES2017_18 <- NHANES2017_18%>% 
+  reduce(full_join, by="SEQN")
+```
+
