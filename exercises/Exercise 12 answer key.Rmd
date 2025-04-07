@@ -47,13 +47,15 @@ head(NHANESdata_reduced)
 ```{r}
 #1. Create the odds table:
 #odds_table_name <- table(data$IndVar, data$DepVar)
-
+Race_HealthIns_odds_table <- table(NHANESdata_reduced$Race, NHANESdata_reduced$HealthInsYN)
 #2. Run the oddsratio on the table you created:
 #oddsratio(odds_table_name)
-
+oddsratio(Race_HealthIns_odds_table)
 #3. Graph the results in a mosaic table:
 #ggplot(data=) + geom_mosaic(aes(x=product(IndVar), fill=DepVar), na.rm=TRUE, show.legend=FALSE) + labs(title="", x="", y="")
-
+ggplot(NHANESdata_reduced) +
+  geom_mosaic(aes(x=product(Race), fill=HealthInsYN), na.rm=TRUE, show.legend = FALSE) +
+  labs(title="OR of health insurance by race", x="Race", y="")
 ```
 Questions: Compared to Mexican Americans, what are the odds ratios having health insurance for each racial category?
 
@@ -61,7 +63,11 @@ Are these odds ratios significant?
 
 6. Calculate the odds ratio of having health insurance by BMI category:
 ```{r}
-
+BMIcat_HealthIns_odds_table <-table(NHANESdata_reduced$BMIcat, NHANESdata_reduced$HealthInsYN)
+oddsratio(BMIcat_HealthIns_odds_table)
+ggplot(NHANESdata_reduced) +
+  geom_mosaic(aes(x=product(BMIcat), fill=HealthInsYN), na.rm=TRUE, show.legend = FALSE) +
+  labs(title="OR of health insurance by BMI category", x="BMIcat", y="")
 ```
 Questions: 
 Compared to the healthy level, what are the odds ratio of having health insurance of the other three BMI categories?
@@ -69,14 +75,21 @@ Compared to the healthy level, what are the odds ratio of having health insuranc
 Are any of these odds ratios significant?
 
 
-7a. Calculate odds ratio of moderate exercise minutes by BMI category. Odds ratios do not work on continuous variables. We have to convert moderate exercise into a dichotomous nominal variable. Here, we will create a new variable, "mod_exerc", in which "Little" = 30 minutes or less of moderate exercise, and "More" = more than 30 minutes of exercise.
+7a. Calculate odds ratio of moderate exercise minutes by BMI category. Odds ratios do not work on continuous variables. We have to convert moderate exercise into a dichotomous nominal variable. Here, I will create a new variable, "mod_exerc", in which "Little" = 30 minutes or less of moderate exercise, and "More" = more than 30 minutes of exercise.
 ```{r}
-
+NHANESdata_reduced$mod_exerc[NHANESdata_reduced$Moderate<=30] <- "Little"
+NHANESdata_reduced$mod_exerc[NHANESdata_reduced$Moderate>30] <- "More"
+factor(c(NHANESdata_reduced$mod_exerc, levels=c("Little", "More")))
+head(NHANESdata_reduced)
 ```
 
 7b. Now, calculate the odds ratio of mod_exerc by BMIcat
 ```{r}
-
+BMIcat_mod_exerc_odds_table <- table(NHANESdata_reduced$BMIcat, NHANESdata_reduced$mod_exerc)
+oddsratio(BMIcat_mod_exerc_odds_table)
+ggplot(NHANESdata_reduced) +
+  geom_mosaic(aes(x=product(BMIcat), fill=mod_exerc), na.rm=TRUE, show.legend = FALSE) +
+  labs(title="OR of moderate exercise by BMI category", x="BMIcat", y="")
 ```
 Questions: 
 Compared to the healthy level, what are the odds ratios of "More" exercise minutes for the other three BMI categories?
