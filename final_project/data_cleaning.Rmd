@@ -4,7 +4,7 @@ output: html_document
 date: "2025-04-10"
 ---
 Replace this empty file with your data cleaning .rmd file we created and started working on 04/10 in class! To do this go to your data cleaning file in R studio:
-File >> Save As >> Github >> 
+File >> Save As >> Github >> data_cleaning[yourname] (folder created by Github) >> final_project
 ```{r}
 #this file is meant to be empty
 ```
